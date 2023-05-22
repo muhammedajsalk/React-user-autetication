@@ -1,8 +1,11 @@
-import React from "react";
+import React,{useContext} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../App";
 
 function Header() {
+    const user_data=useContext(UserContext)
+
     return (
         <HeaderContainer>
             <Logo
@@ -10,7 +13,11 @@ function Header() {
                 alt="Logo"
             />
             <RightContainer>
-                <LoginButton>Login</LoginButton>
+                {user_data ?(
+                    <LoginButton>Login out</LoginButton>
+                ):(
+                    <LoginButton to="/auth/login/">Login</LoginButton>
+                )}
             </RightContainer>
         </HeaderContainer>
     );
