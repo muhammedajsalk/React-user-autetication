@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styled from "styled-components";
 import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../axiosConfig";
+import { UserContext } from "../../App";
 
 export default function Signup() {
     const [email,setEmail]= useState("");
     const [name,setName]= useState("");
     const [password,setPassword]= useState("");
     const [message,setMessage]= useState("");
+
+    const {updateUserData}=useContext(UserContext)
 
     const history = useNavigate();
 
@@ -24,7 +27,8 @@ export default function Signup() {
            if(status_code === 6000){
             console.log(response.data)
             localStorage.setItem("user_data",JSON.stringify(data))
-             history("/");
+            updateUserData({type:"LOGIN",payload:data});
+            history("/");
            }else{
             setMessage(response.data.message);
            }

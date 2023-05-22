@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../axiosConfig";
+import { UserContext } from "../../App";
 
 
 export default function Login() {
@@ -10,6 +11,8 @@ export default function Login() {
     const [username,setUsername]= useState("");
     const [password,setPassword]= useState("");
     const [message,setMessage]= useState("");
+
+    const {updateUserData}=useContext(UserContext)
 
     const history = useNavigate();
 
@@ -21,8 +24,9 @@ export default function Login() {
         .post(`${BASE_URL}/auth/token/`,{username,password})
         .then((response)=>{
            let data=response.data;
-            localStorage.setItem("user_data",JSON.stringify(data))
-            history("/");
+           localStorage.setItem("user_data",JSON.stringify(data))
+           updateUserData({type:"LOGIN",payload:data});
+           history("/");
         })
         .catch((error)=>{
             if (error.response && error.response.status === 401) {
