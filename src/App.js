@@ -8,14 +8,24 @@ import Signup from "./components/screens/Signup";
 
 export const UserContext=React.createContext();
 
-function App() { 
+function App(props) { 
     const [userData,setUserData]=useState({});
+    const updateUserData=(action)=>{
+       switch(action.type){
+        case "LOGOUT":
+          setUserData(null);
+          localStorage.clear();
+          break;
+        default:
+          break;
+       }
+    };
     useEffect(()=>{
       setUserData(JSON.parse(localStorage.getItem("user_data")));
     },[])
     return ( 
        <div> 
-        <UserContext.Provider value={userData}>
+        <UserContext.Provider value={{userData,updateUserData}}>
           <Router>
                 <Routes>
                     <Route path="/" element={<Places />} />

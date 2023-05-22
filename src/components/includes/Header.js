@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../../App";
 
 function Header() {
-    const user_data=useContext(UserContext)
-
+    const {userData,updateUserData}=useContext(UserContext)
+    const handleLogout=()=>{
+        updateUserData({type:"LOGOUT"});
+    }
     return (
         <HeaderContainer>
             <Logo
@@ -13,8 +15,8 @@ function Header() {
                 alt="Logo"
             />
             <RightContainer>
-                {user_data ?(
-                    <LoginButton>Login out</LoginButton>
+                {userData ?(
+                    <LoginButton onClick={()=>handleLogout()}>Login out</LoginButton>
                 ):(
                     <LoginButton to="/auth/login/">Login</LoginButton>
                 )}
