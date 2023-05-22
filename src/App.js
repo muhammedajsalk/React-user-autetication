@@ -10,6 +10,7 @@ export const UserContext=React.createContext();
 
 function App(props) { 
     const [userData,setUserData]=useState({});
+    const [loading,setLoading]=useState(true);
     const updateUserData=(action)=>{
        switch(action.type){
         case "LOGOUT":
@@ -25,8 +26,11 @@ function App(props) {
     };
     useEffect(()=>{
       setUserData(JSON.parse(localStorage.getItem("user_data")));
+      setLoading(false);
     },[])
-    return ( 
+    return loading ? (
+    <h1>Loading</h1>
+    ) : ( 
        <div> 
         <UserContext.Provider value={{userData,updateUserData}}>
           <Router>

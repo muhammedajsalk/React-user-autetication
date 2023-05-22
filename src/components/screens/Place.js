@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import Header from "../includes/Header";
 import styled from "styled-components";
 import axios from "axios";
 import { BASE_URL } from "../../axiosConfig";
 import Helmet from "react-helmet";
 import { useParams } from "react-router";
+import { UserContext } from "../../App";
 
 export default function Place() {
     const [place, setPlace] = useState({
@@ -12,9 +13,17 @@ export default function Place() {
         gallery: [],
     });
     const { id } = useParams();
+
+    const {userData}=useContext(UserContext);
+    
     useEffect(() => {
+        console.log(userData);
         axios
-            .get(`${BASE_URL}/places/protected/${id}`)
+            .get(`${BASE_URL}/places/protected/${id}`,{
+                headers:{
+                    Authorization:`Bearer ${userData?.access}`
+                }
+            })
             .then((response) => {
                 setPlace(response.data.data);
             })
@@ -45,8 +54,8 @@ export default function Place() {
                     <GalleryImageItem>
                         <GalleryImage src={place.image} alt="" />
                     </GalleryImageItem>
-                    {place.gallery.map((item) => (
-                        <GalleryImageItem>
+                    {place.gallery.map((item,index) => (
+                        <GalleryImageItem key={index}>
                             <GalleryImage src={item.image} alt="" />
                         </GalleryImageItem>
                     ))}
