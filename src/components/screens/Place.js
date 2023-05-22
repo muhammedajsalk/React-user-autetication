@@ -14,7 +14,7 @@ export default function Place() {
     const { id } = useParams();
     useEffect(() => {
         axios
-            .get(`${BASE_URL}/places/view/${id}`)
+            .get(`${BASE_URL}/places/protected/${id}`)
             .then((response) => {
                 setPlace(response.data.data);
             })
